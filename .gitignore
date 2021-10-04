@@ -1,0 +1,6 @@
+# go packages
+.go
+.DS_Store
+
+# createProtobuffFolder and protobuf-import
+scripts/*

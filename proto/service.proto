@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "../proto";
+
+message Request {
+}
+
+message GetCategoriesResponse {
+  int64 catId = 1;
+  string name = 2;
+  int64 typeId = 3;
+}
+
+message GetTransactionsResponse {
+  int64 tranId = 1;
+  int64 catId = 2;
+  int64 amount = 3;
+}
+
+service AddService {
+  rpc getCategories(Request) returns (GetCategoriesResponse);
+  rpc getTransactions(Request) returns (GetTransactionsResponse);
+}
