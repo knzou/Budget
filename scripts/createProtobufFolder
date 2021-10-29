@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+# import and reuse existing .proto definitions from your versioned dependencies
+# Usage : protoc -I ./scripts/protobuf-import -I ./ ./scripts/protobuf-import/proto/service.proto --go_out=plugins=grpc:./.
+set -emou pipefail
+
+# Set parent directory to hold all the symlinks
+PROTOBUF_IMPORT_DIR='protobuf-import'
+mkdir -p "${PROTOBUF_IMPORT_DIR}"
+
+# remove any existing symlinks & empty directories
+find "${PROTOBUF_IMPORT_DIR}" -type l -delete
+find "${PROTOBUF_IMPORT_DIR}" -type d -empty -delete
+
+# download all the required dependencies - try to use from cache
+go mod download
+
+# get all the modules we use and create required directory structure [More info at `go help list`]
+go list -f "${PROTOBUF_IMPORT_DIR}/{{ .Path }}" -m all \
+    | xargs -L1 dirname | sort | uniq | xargs mkdir -p
+
+# create symlinks 
+# without xargs, cannot pass output into ln -s as 'ln -s source_file link_name'
+go list -f "{{ .Dir }}  ${PROTOBUF_IMPORT_DIR}/{{ .Path }}" -m all \
+    | xargs -L1 -- ln -s
