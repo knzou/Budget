@@ -3,4 +3,4 @@
 .DS_Store
 
 # createProtobuffFolder and protobuf-import
-scripts/*
+scripts/createProtobuffFolder

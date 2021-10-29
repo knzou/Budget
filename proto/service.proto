@@ -1,22 +1,28 @@
 syntax = "proto3";
 
-package proto;
+package BudgetCalculatorService.v1;
 
-option go_package = "../proto";
+option go_package = "github.com/knzou/BudgetCalculatorService/v1";
 
 message Request {
 }
 
 message GetCategoriesResponse {
-  int64 catId = 1;
-  string name = 2;
-  int64 typeId = 3;
+  message Category {
+    int64 catId = 1;
+    string name = 2;
+    int64 typeId = 3;
+  }
+  repeated Category categories = 1;
 }
 
 message GetTransactionsResponse {
-  int64 tranId = 1;
-  int64 catId = 2;
-  int64 amount = 3;
+  message Transaction {
+    int64 catId = 1;
+    string name = 2;
+    int64 typeId = 3;
+  }
+  repeated Transaction transactions = 1;
 }
 
 service AddService {
