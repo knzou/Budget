@@ -1,17 +1,19 @@
-package budget
+package db
 
 import (
-	"database/sql"
+	"log"
+	_ "database/sql"
+	"github.com/jmoiron/sqlx"
 )
 
 type Category struct {
-	catId int
-	name string
-	typeId int
+	CatId int64 `db:"catId"`
+	Name string `db:"name"`
+	TypeId int64 `db:"typeId"`
 }
 
-func GetCategories(db *sql.DB) ([]Category, error) {
-	rows, err := db.Query("SELECT * FROM Category")
+func GetCategories(db *sqlx.DB) ([]Category, error) {
+	rows, err := db.Query("SELECT * FROM category")
 	if err != nil {
 		return nil, err
 	}
@@ -21,17 +23,18 @@ func GetCategories(db *sql.DB) ([]Category, error) {
 
 	for rows.Next() {
 		var cat Category
-
-		err := rows.Scan(&Category.catId, &Category.name, &Category.typeId)
+		err := rows.Scan(&cat.CatId, &cat.Name, &cat.TypeId)
 		if err != nil {
 			return nil,  err
 		}
+		log.Printf("cat %v", cat)
 		cats = append(cats, cat)
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-
+	// look at cats then
+	// find a way to return []*proto.GetCategoriesResponse_Category
 	return cats, nil
 }
 // uses - Dependency injection -> more details(https://www.alexedwards.net/blog/organising-database-access)

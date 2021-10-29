@@ -2,14 +2,17 @@ package main
 
 import (
 	"context"
-	"database/sql"
+	_ "database/sql"
 	"net"
+	"fmt"
 
-	"github.com/knzou/BudgetCalculatorService/budget"
+	"github.com/knzou/BudgetCalculatorService/db"
 	proto "github.com/knzou/BudgetCalculatorService/proto"
 	
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	_ "github.com/lib/pq"
+    "github.com/jmoiron/sqlx"
 )
 
 const (
@@ -28,9 +31,8 @@ func main() {
     "dbname=%s sslmode=disable",
     host, port, user, dbname)
     // open and connect at the same tim, panicing on error
-    db := sqlx.MustConnect("postgres", psqlInfo)
-
-	defer db.Close()
+    db1 := sqlx.MustConnect("postgres", psqlInfo)
+	// defer db1.Close()
 
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
@@ -38,7 +40,7 @@ func main() {
 	}
 	srv := grpc.NewServer()
 	// add our services into the grpc server with our created connection pool db
-	proto.RegisterAddServiceServer(srv, &server{db: db})
+	proto.RegisterAddServiceServer(srv, &server{db: db1})
 	// reflection will set up serializing and deserializing
 	reflection.Register(srv)
 
@@ -48,14 +50,19 @@ func main() {
 }
 
 func (s *server) GetCategories(ctx context.Context, request *proto.Request) (*proto.GetCategoriesResponse, error) {
-	var categories Category[]
-	categories, err = GetCategories(s.db)
+	categories, err := db.GetCategories(s.db)
 	if err != nil {
 		panic(err)
 	}
-	return &proto.GetCategoriesResponse{categories: categories}, nil
+	// defer s.db.Close()// not needed, once app close, db connection close too
+
+	var cats []*proto.GetCategoriesResponse_Category
+	for _, category := range categories {
+		cats = append(cats, &proto.GetCategoriesResponse_Category{CatId: category.CatId , Name: category.Name, TypeId: category.TypeId})
+	}
+	return &proto.GetCategoriesResponse{Categories: cats}, nil
 }
 
 func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*proto.GetTransactionsResponse, error) {
-	return &proto.GetTransactionsResponse{transactions: []}, nil
+	return &proto.GetTransactionsResponse{}, nil
 }
