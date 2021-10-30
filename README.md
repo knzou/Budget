@@ -1,4 +1,4 @@
-### BudgetCalculatorService
+### Budget
 
 # Settings
 run bash ./scripts/setup
@@ -7,4 +7,4 @@ run bash ./scripts/setup
 protoc ./proto/service.proto -I. --go_out=plugins=grpc:./.go/src
 
 # Local 
-go get -u github.com/knzou/BudgetCalculatorService/proto
+go get -u github.com/knzou/Budget/proto

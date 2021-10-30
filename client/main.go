@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	proto "github.com/knzou/BudgetCalculatorService/proto"
+	proto "github.com/knzou/Budget/proto"
 	"google.golang.org/grpc"
 )
 

@@ -5,11 +5,17 @@ import (
 	_ "database/sql"
 	"github.com/jmoiron/sqlx"
 )
-
+// uses - Dependency injection -> more details(https://www.alexedwards.net/blog/organising-database-access)
 type Category struct {
-	CatId int64 `db:"catId"`
+	CatId int64 `db:"catid"`
 	Name string `db:"name"`
-	TypeId int64 `db:"typeId"`
+	TypeId int64 `db:"typeid"`
+}
+
+type Transaction struct {
+	TranId int64 `db:"tranid"`
+	CatId int64 `db:"catid"`
+	Amount int64 `db:"amount"`
 }
 
 func GetCategories(db *sqlx.DB) ([]Category, error) {
@@ -33,9 +39,15 @@ func GetCategories(db *sqlx.DB) ([]Category, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	// look at cats then
-	// find a way to return []*proto.GetCategoriesResponse_Category
 	return cats, nil
 }
-// uses - Dependency injection -> more details(https://www.alexedwards.net/blog/organising-database-access)
-// Define all db tables model here
+
+func GetTransactions(db *sqlx.DB) ([]Transaction, error) {
+	var trans = []Transaction{}
+	// get is single, select is all
+	// err = db.Get(&trans, "SELECT * FROM transaction")
+	db.Select(&trans, "SELECT * FROM transaction")
+
+	log.Printf("trans %v", trans[0])
+	return trans, nil
+}
