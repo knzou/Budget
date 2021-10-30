@@ -6,8 +6,8 @@ import (
 	"net"
 	"fmt"
 
-	"github.com/knzou/BudgetCalculatorService/db"
-	proto "github.com/knzou/BudgetCalculatorService/proto"
+	"github.com/knzou/Budget/db"
+	proto "github.com/knzou/Budget/proto"
 	
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -22,25 +22,21 @@ const (
     dbname  = "kenzou"
 )
 type server struct{
-	db *sqlx.DB
+	rdb *sqlx.DB
 }
 
 func main() {
-
     psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
     "dbname=%s sslmode=disable",
     host, port, user, dbname)
-    // open and connect at the same tim, panicing on error
-    db1 := sqlx.MustConnect("postgres", psqlInfo)
-	// defer db1.Close()
 
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
 		panic(err)
 	}
 	srv := grpc.NewServer()
-	// add our services into the grpc server with our created connection pool db
-	proto.RegisterAddServiceServer(srv, &server{db: db1})
+	// add our services into the grpc server with our db instance, which will close once app exit
+	proto.RegisterAddServiceServer(srv, &server{rdb: sqlx.MustConnect("postgres", psqlInfo)})
 	// reflection will set up serializing and deserializing
 	reflection.Register(srv)
 
@@ -50,11 +46,10 @@ func main() {
 }
 
 func (s *server) GetCategories(ctx context.Context, request *proto.Request) (*proto.GetCategoriesResponse, error) {
-	categories, err := db.GetCategories(s.db)
+	categories, err := db.GetCategories(s.rdb)
 	if err != nil {
 		panic(err)
 	}
-	// defer s.db.Close()// not needed, once app close, db connection close too
 
 	var cats []*proto.GetCategoriesResponse_Category
 	for _, category := range categories {
@@ -64,5 +59,13 @@ func (s *server) GetCategories(ctx context.Context, request *proto.Request) (*pr
 }
 
 func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*proto.GetTransactionsResponse, error) {
-	return &proto.GetTransactionsResponse{}, nil
+	transactions, err := db.GetTransactions(s.rdb)
+	if err != nil {
+		panic(err)
+	}
+	var trans []*proto.GetTransactionsResponse_Transaction
+	for _, transaction := range transactions {
+		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, Amount: transaction.Amount})
+	}
+	return &proto.GetTransactionsResponse{Transactions: trans}, nil
 }
