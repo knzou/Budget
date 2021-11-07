@@ -3,6 +3,3 @@
 set -emou pipefail
 
 go get -u
-
-# create protoc binary
-go get -u github.com/golang/protobuf/protoc-gen-go

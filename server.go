@@ -65,7 +65,7 @@ func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*
 	}
 	var trans []*proto.GetTransactionsResponse_Transaction
 	for _, transaction := range transactions {
-		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, Amount: transaction.Amount})
+		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, TransDate: transaction.TransDate, Amount: transaction.Amount})
 	}
 	return &proto.GetTransactionsResponse{Transactions: trans}, nil
 }
