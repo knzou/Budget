@@ -14,11 +14,11 @@ import (
 	_ "github.com/lib/pq"
     "github.com/jmoiron/sqlx"
 )
-
+// Use flags to pass in db connection credentials by using -h flag in command line
 const (
     host    = "localhost"
     port    = 5432
-    user    = "kenzou"
+    user    = "test_user"
     dbname  = "kenzou"
 )
 type server struct{
