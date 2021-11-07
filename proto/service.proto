@@ -3,6 +3,7 @@ syntax = "proto3";
 package Budget.v1;
 
 option go_package = "github.com/knzou/Budget/v1";
+import "date.proto";
 
 message Request {
 }
@@ -20,7 +21,8 @@ message GetTransactionsResponse {
   message Transaction {
     int64 tranId = 1;
     int64 catId = 2;
-    int64 amount = 3;
+    Date transDate = 3;
+    int64 amount = 4;
   }
   repeated Transaction transactions = 1;
 }
