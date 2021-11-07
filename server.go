@@ -5,6 +5,7 @@ import (
 	_ "database/sql"
 	"net"
 	"fmt"
+	"strconv"
 
 	"github.com/knzou/Budget/db"
 	proto "github.com/knzou/Budget/proto"
@@ -65,7 +66,20 @@ func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*
 	}
 	var trans []*proto.GetTransactionsResponse_Transaction
 	for _, transaction := range transactions {
-		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, TransDate: transaction.TransDate, Amount: transaction.Amount})
+		year, err := strconv.Atoi(transaction.TransDate[0:4])
+		if err != nil {
+			panic(err)
+		}
+		month, err := strconv.Atoi(transaction.TransDate[5:7])
+		if err != nil {
+			panic(err)
+		}
+		day, err := strconv.Atoi(transaction.TransDate[8:10])
+		if err != nil {
+			panic(err)
+		}
+		transformTransDate := &proto.Date{Year: int32(year), Month: int32(month), Day: int32(day)}
+		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, TransDate: transformTransDate, Amount: transaction.Amount})
 	}
 	return &proto.GetTransactionsResponse{Transactions: trans}, nil
 }

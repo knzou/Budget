@@ -4,8 +4,6 @@ import (
 	"log"
 	_ "database/sql"
 
-	date "github.com/knzou/Budget/proto/date"
-
 	"github.com/jmoiron/sqlx"
 )
 // uses - Dependency injection -> more details(https://www.alexedwards.net/blog/organising-database-access)
@@ -18,7 +16,7 @@ type Category struct {
 type Transaction struct {
 	TranId int64 `db:"tranid"`
 	CatId int64 `db:"catid"`
-	TransDate *date.Date `db:"transdate"`
+	TransDate string `db:"transdate"`
 	Amount int64 `db:"amount"`
 }
 
