@@ -4,22 +4,22 @@ import (
 	"log"
 	_ "database/sql"
 
-	proto "github.com/knzou/Budget/proto"
+	date "github.com/knzou/Budget/proto/date"
 
 	"github.com/jmoiron/sqlx"
 )
 // uses - Dependency injection -> more details(https://www.alexedwards.net/blog/organising-database-access)
 type Category struct {
-	catId int64 `db:"catid"`
-	name string `db:"name"`
-	typeId int64 `db:"typeid"`
+	CatId int64 `db:"catid"`
+	Name string `db:"name"`
+	TypeId int64 `db:"typeid"`
 }
 
 type Transaction struct {
-	tranId int64 `db:"tranid"`
-	catId int64 `db:"catid"`
-	transDate *proto.Date `db:"transdate"`
-	amount int64 `db:"amount"`
+	TranId int64 `db:"tranid"`
+	CatId int64 `db:"catid"`
+	TransDate *date.Date `db:"transdate"`
+	Amount int64 `db:"amount"`
 }
 
 func GetCategories(db *sqlx.DB) ([]Category, error) {
