@@ -1,8 +1,12 @@
 package db
 
 import (
+	"fmt"
 	"log"
+	"strings"
 	_ "database/sql"
+
+	proto "github.com/knzou/Budget/proto"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -18,6 +22,11 @@ type Transaction struct {
 	CatId int64 `db:"catid"`
 	TransDate string `db:"transdate"`
 	Amount int64 `db:"amount"`
+}
+
+type Person struct {
+	Pid int64 `db:"pid"`
+	Name string `db:"name"`
 }
 
 func GetCategories(db *sqlx.DB) ([]Category, error) {
@@ -52,4 +61,26 @@ func GetTransactions(db *sqlx.DB) ([]Transaction, error) {
 
 	log.Printf("trans %v", trans[0])
 	return trans, nil
+}
+
+func GetPeople(db *sqlx.DB, request *proto.GetPeopleRequest) ([]Person, error) {
+	// This might be the long way for now, but as where clauses increase, it will scale
+	contraints := map[string]string{"name": request.GetName()}
+	var query strings.Builder
+	query.WriteString("SELECT * FROM person")
+
+	for _, k := range []string{"name"}{
+		v, ok := contraints[k]
+		fmt.Printf("%T", v)
+		fmt.Println(ok)
+		if ok && k == "name" {
+			query.WriteString(fmt.Sprintf(" WHERE %s %% '%s'", k, v))
+		} else {
+			query.WriteString(fmt.Sprintf(" AND %s = '%s'", k, v))
+		}
+	}
+	var people = []Person{}
+	db.Select(&people, query.String())
+	fmt.Println(query.String())
+	return people, nil
 }

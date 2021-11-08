@@ -156,6 +156,100 @@ func (x *GetTransactionsResponse) GetTransactions() []*GetTransactionsResponse_T
 	return nil
 }
 
+type GetPeopleRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *GetPeopleRequest) Reset() {
+	*x = GetPeopleRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_service_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPeopleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPeopleRequest) ProtoMessage() {}
+
+func (x *GetPeopleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_service_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPeopleRequest.ProtoReflect.Descriptor instead.
+func (*GetPeopleRequest) Descriptor() ([]byte, []int) {
+	return file_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetPeopleRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetPeopleResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	People []*GetPeopleResponse_Person `protobuf:"bytes,1,rep,name=people,proto3" json:"people,omitempty"`
+}
+
+func (x *GetPeopleResponse) Reset() {
+	*x = GetPeopleResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_service_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPeopleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPeopleResponse) ProtoMessage() {}
+
+func (x *GetPeopleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_service_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPeopleResponse.ProtoReflect.Descriptor instead.
+func (*GetPeopleResponse) Descriptor() ([]byte, []int) {
+	return file_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetPeopleResponse) GetPeople() []*GetPeopleResponse_Person {
+	if x != nil {
+		return x.People
+	}
+	return nil
+}
+
 type GetCategoriesResponse_Category struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -169,7 +263,7 @@ type GetCategoriesResponse_Category struct {
 func (x *GetCategoriesResponse_Category) Reset() {
 	*x = GetCategoriesResponse_Category{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[3]
+		mi := &file_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -182,7 +276,7 @@ func (x *GetCategoriesResponse_Category) String() string {
 func (*GetCategoriesResponse_Category) ProtoMessage() {}
 
 func (x *GetCategoriesResponse_Category) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[3]
+	mi := &file_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +327,7 @@ type GetTransactionsResponse_Transaction struct {
 func (x *GetTransactionsResponse_Transaction) Reset() {
 	*x = GetTransactionsResponse_Transaction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[4]
+		mi := &file_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -246,7 +340,7 @@ func (x *GetTransactionsResponse_Transaction) String() string {
 func (*GetTransactionsResponse_Transaction) ProtoMessage() {}
 
 func (x *GetTransactionsResponse_Transaction) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[4]
+	mi := &file_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -290,6 +384,61 @@ func (x *GetTransactionsResponse_Transaction) GetAmount() int64 {
 	return 0
 }
 
+type GetPeopleResponse_Person struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Pid  int64  `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *GetPeopleResponse_Person) Reset() {
+	*x = GetPeopleResponse_Person{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_service_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPeopleResponse_Person) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPeopleResponse_Person) ProtoMessage() {}
+
+func (x *GetPeopleResponse_Person) ProtoReflect() protoreflect.Message {
+	mi := &file_service_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPeopleResponse_Person.ProtoReflect.Descriptor instead.
+func (*GetPeopleResponse_Person) Descriptor() ([]byte, []int) {
+	return file_service_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *GetPeopleResponse_Person) GetPid() int64 {
+	if x != nil {
+		return x.Pid
+	}
+	return 0
+}
+
+func (x *GetPeopleResponse_Person) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_service_proto protoreflect.FileDescriptor
 
 var file_service_proto_rawDesc = []byte{
@@ -322,19 +471,34 @@ var file_service_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x44, 0x61, 0x74, 0x65,
 	0x52, 0x09, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x44, 0x61, 0x74, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61,
 	0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f,
-	0x75, 0x6e, 0x74, 0x32, 0x9e, 0x01, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x12, 0x45, 0x0a, 0x0d, 0x67, 0x65, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
-	0x69, 0x65, 0x73, 0x12, 0x12, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74,
-	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65,
-	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a, 0x0f, 0x67, 0x65, 0x74,
-	0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x12, 0x2e, 0x42,
-	0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x22, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74,
-	0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x42, 0x1c, 0x5a, 0x1a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x6b, 0x6e, 0x7a, 0x6f, 0x75, 0x2f, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2f,
-	0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x75, 0x6e, 0x74, 0x22, 0x26, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x50, 0x65, 0x6f, 0x70, 0x6c, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x80, 0x01, 0x0a, 0x11,
+	0x47, 0x65, 0x74, 0x50, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x3b, 0x0a, 0x06, 0x70, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x23, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x74, 0x50, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
+	0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x06, 0x70, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x1a, 0x2e,
+	0x0a, 0x06, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x70, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x70, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x32, 0xe6,
+	0x01, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x45, 0x0a,
+	0x0d, 0x67, 0x65, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x12,
+	0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x20, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47,
+	0x65, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73,
+	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x12, 0x2e, 0x42, 0x75, 0x64, 0x67, 0x65, 0x74,
+	0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x42, 0x75,
+	0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73,
+	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x46, 0x0a, 0x09, 0x67, 0x65, 0x74, 0x50, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x12, 0x1b, 0x2e, 0x42,
+	0x75, 0x64, 0x67, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x65, 0x6f, 0x70,
+	0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x42, 0x75, 0x64, 0x67,
+	0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x65, 0x6f, 0x70, 0x6c, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x1c, 0x5a, 0x1a, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x6e, 0x7a, 0x6f, 0x75, 0x2f, 0x42, 0x75, 0x64, 0x67,
+	0x65, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -349,28 +513,34 @@ func file_service_proto_rawDescGZIP() []byte {
 	return file_service_proto_rawDescData
 }
 
-var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_service_proto_goTypes = []interface{}{
 	(*Request)(nil),                             // 0: Budget.v1.Request
 	(*GetCategoriesResponse)(nil),               // 1: Budget.v1.GetCategoriesResponse
 	(*GetTransactionsResponse)(nil),             // 2: Budget.v1.GetTransactionsResponse
-	(*GetCategoriesResponse_Category)(nil),      // 3: Budget.v1.GetCategoriesResponse.Category
-	(*GetTransactionsResponse_Transaction)(nil), // 4: Budget.v1.GetTransactionsResponse.Transaction
-	(*Date)(nil),                                // 5: date.Date
+	(*GetPeopleRequest)(nil),                    // 3: Budget.v1.GetPeopleRequest
+	(*GetPeopleResponse)(nil),                   // 4: Budget.v1.GetPeopleResponse
+	(*GetCategoriesResponse_Category)(nil),      // 5: Budget.v1.GetCategoriesResponse.Category
+	(*GetTransactionsResponse_Transaction)(nil), // 6: Budget.v1.GetTransactionsResponse.Transaction
+	(*GetPeopleResponse_Person)(nil),            // 7: Budget.v1.GetPeopleResponse.Person
+	(*Date)(nil),                                // 8: date.Date
 }
 var file_service_proto_depIdxs = []int32{
-	3, // 0: Budget.v1.GetCategoriesResponse.categories:type_name -> Budget.v1.GetCategoriesResponse.Category
-	4, // 1: Budget.v1.GetTransactionsResponse.transactions:type_name -> Budget.v1.GetTransactionsResponse.Transaction
-	5, // 2: Budget.v1.GetTransactionsResponse.Transaction.transDate:type_name -> date.Date
-	0, // 3: Budget.v1.AddService.getCategories:input_type -> Budget.v1.Request
-	0, // 4: Budget.v1.AddService.getTransactions:input_type -> Budget.v1.Request
-	1, // 5: Budget.v1.AddService.getCategories:output_type -> Budget.v1.GetCategoriesResponse
-	2, // 6: Budget.v1.AddService.getTransactions:output_type -> Budget.v1.GetTransactionsResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 0: Budget.v1.GetCategoriesResponse.categories:type_name -> Budget.v1.GetCategoriesResponse.Category
+	6, // 1: Budget.v1.GetTransactionsResponse.transactions:type_name -> Budget.v1.GetTransactionsResponse.Transaction
+	7, // 2: Budget.v1.GetPeopleResponse.people:type_name -> Budget.v1.GetPeopleResponse.Person
+	8, // 3: Budget.v1.GetTransactionsResponse.Transaction.transDate:type_name -> date.Date
+	0, // 4: Budget.v1.AddService.getCategories:input_type -> Budget.v1.Request
+	0, // 5: Budget.v1.AddService.getTransactions:input_type -> Budget.v1.Request
+	3, // 6: Budget.v1.AddService.getPeople:input_type -> Budget.v1.GetPeopleRequest
+	1, // 7: Budget.v1.AddService.getCategories:output_type -> Budget.v1.GetCategoriesResponse
+	2, // 8: Budget.v1.AddService.getTransactions:output_type -> Budget.v1.GetTransactionsResponse
+	4, // 9: Budget.v1.AddService.getPeople:output_type -> Budget.v1.GetPeopleResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_service_proto_init() }
@@ -417,7 +587,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCategoriesResponse_Category); i {
+			switch v := v.(*GetPeopleRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -429,7 +599,43 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetPeopleResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetCategoriesResponse_Category); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetTransactionsResponse_Transaction); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetPeopleResponse_Person); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -447,7 +653,7 @@ func file_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -475,6 +681,7 @@ const _ = grpc.SupportPackageIsVersion6
 type AddServiceClient interface {
 	GetCategories(ctx context.Context, in *Request, opts ...grpc.CallOption) (*GetCategoriesResponse, error)
 	GetTransactions(ctx context.Context, in *Request, opts ...grpc.CallOption) (*GetTransactionsResponse, error)
+	GetPeople(ctx context.Context, in *GetPeopleRequest, opts ...grpc.CallOption) (*GetPeopleResponse, error)
 }
 
 type addServiceClient struct {
@@ -503,10 +710,20 @@ func (c *addServiceClient) GetTransactions(ctx context.Context, in *Request, opt
 	return out, nil
 }
 
+func (c *addServiceClient) GetPeople(ctx context.Context, in *GetPeopleRequest, opts ...grpc.CallOption) (*GetPeopleResponse, error) {
+	out := new(GetPeopleResponse)
+	err := c.cc.Invoke(ctx, "/Budget.v1.AddService/getPeople", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AddServiceServer is the server API for AddService service.
 type AddServiceServer interface {
 	GetCategories(context.Context, *Request) (*GetCategoriesResponse, error)
 	GetTransactions(context.Context, *Request) (*GetTransactionsResponse, error)
+	GetPeople(context.Context, *GetPeopleRequest) (*GetPeopleResponse, error)
 }
 
 // UnimplementedAddServiceServer can be embedded to have forward compatible implementations.
@@ -518,6 +735,9 @@ func (*UnimplementedAddServiceServer) GetCategories(context.Context, *Request) (
 }
 func (*UnimplementedAddServiceServer) GetTransactions(context.Context, *Request) (*GetTransactionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactions not implemented")
+}
+func (*UnimplementedAddServiceServer) GetPeople(context.Context, *GetPeopleRequest) (*GetPeopleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPeople not implemented")
 }
 
 func RegisterAddServiceServer(s *grpc.Server, srv AddServiceServer) {
@@ -560,6 +780,24 @@ func _AddService_GetTransactions_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AddService_GetPeople_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPeopleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AddServiceServer).GetPeople(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Budget.v1.AddService/GetPeople",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AddServiceServer).GetPeople(ctx, req.(*GetPeopleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _AddService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "Budget.v1.AddService",
 	HandlerType: (*AddServiceServer)(nil),
@@ -571,6 +809,10 @@ var _AddService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getTransactions",
 			Handler:    _AddService_GetTransactions_Handler,
+		},
+		{
+			MethodName: "getPeople",
+			Handler:    _AddService_GetPeople_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
