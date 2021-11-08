@@ -27,7 +27,20 @@ message GetTransactionsResponse {
   repeated Transaction transactions = 1;
 }
 
+message GetPeopleRequest {
+  string name = 1;
+}
+
+message GetPeopleResponse {
+  message Person {
+    int64 pid = 1;
+    string name = 2;
+  }
+  repeated Person people = 1;
+}
+
 service AddService {
   rpc getCategories(Request) returns (GetCategoriesResponse);
   rpc getTransactions(Request) returns (GetTransactionsResponse);
+  rpc getPeople(GetPeopleRequest) returns (GetPeopleResponse);
 }

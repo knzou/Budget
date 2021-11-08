@@ -15,7 +15,7 @@ BEGIN
 
     -- Tables
     CREATE UNLOGGED TABLE IF NOT EXISTS person(
-	id INT PRIMARY KEY,
+	pid INT PRIMARY KEY,
 	name VARCHAR NOT NULL
     );
 
@@ -38,8 +38,9 @@ BEGIN
         FROM person
     )
     THEN 
-        INSERT INTO person(id, name)
-        VALUES(0,'Ken');
+        INSERT INTO person(pid, name)
+        VALUES(1,'kenzou'),
+        (2,'personwithlongname');
     END IF;
 
     IF NOT EXISTS (
@@ -48,8 +49,8 @@ BEGIN
     )
     THEN 
         INSERT INTO category(catId, name, typeId)
-        VALUES(0,'Food',0),
-        (1,'Bills',0);
+        VALUES(1,'Food',1),
+        (2,'Bills',1);
     END IF;
 
     -- TRUNCATE transaction table to prepare for bulk loading

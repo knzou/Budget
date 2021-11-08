@@ -83,3 +83,15 @@ func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*
 	}
 	return &proto.GetTransactionsResponse{Transactions: trans}, nil
 }
+
+func (s *server) GetPeople(ctx context.Context, request *proto.GetPeopleRequest) (*proto.GetPeopleResponse, error) {
+	people, err := db.GetPeople(s.rdb, request)
+	if err != nil {
+		panic(err)
+	}
+	var ppl []*proto.GetPeopleResponse_Person
+	for _, person := range people {
+		ppl = append(ppl, &proto.GetPeopleResponse_Person{Pid: person.Pid , Name: person.Name})
+	}
+	return &proto.GetPeopleResponse{People: ppl}, nil
+}
