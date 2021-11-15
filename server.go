@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"log"
 	_ "database/sql"
 	"net"
 	"fmt"
+	"time"
 	"strconv"
+	"sync"
 
 	"github.com/knzou/Budget/db"
 	proto "github.com/knzou/Budget/proto"
@@ -36,8 +39,10 @@ func main() {
 		panic(err)
 	}
 	srv := grpc.NewServer()
+	pool := sqlx.MustConnect("postgres", psqlInfo)
+	pool.SetConnMaxIdleTime(10 * time.Second)
 	// add our services into the grpc server with our db instance, which will close once app exit
-	proto.RegisterAddServiceServer(srv, &server{rdb: sqlx.MustConnect("postgres", psqlInfo)})
+	proto.RegisterAddServiceServer(srv, &server{rdb: pool})
 	// reflection will set up serializing and deserializing
 	reflection.Register(srv)
 
@@ -47,6 +52,8 @@ func main() {
 }
 
 func (s *server) GetCategories(ctx context.Context, request *proto.Request) (*proto.GetCategoriesResponse, error) {
+	stats := s.rdb.Stats()
+	log.Printf("Pool Status \n Open Connections: %d \n InUse: %d \n Idle: %d", stats.OpenConnections, stats.InUse, stats.Idle)
 	categories, err := db.GetCategories(s.rdb)
 	if err != nil {
 		panic(err)
@@ -94,4 +101,59 @@ func (s *server) GetPeople(ctx context.Context, request *proto.GetPeopleRequest)
 		ppl = append(ppl, &proto.GetPeopleResponse_Person{Pid: person.Pid , Name: person.Name})
 	}
 	return &proto.GetPeopleResponse{People: ppl}, nil
+}
+
+func (s *server) GetTotalTransactionAmount(ctx context.Context, request *proto.GetTotalTransactionAmountRequest) (*proto.GetTotalTransactionAmountResponse, error) {
+	start := time.Now()
+	transactions, err := db.GetTransactions(s.rdb)
+	if err != nil {
+		panic(err)
+	}
+	var totalAmount int64
+	if request.GetIsParallel() {
+		processTransactionInParallel(start, transactions)
+	} else {
+		for _, transaction := range transactions {
+			totalAmount = totalAmount + transaction.Amount
+			waitTwentyMilliseconds()
+		}
+	}
+	return &proto.GetTotalTransactionAmountResponse{TotalAmount: totalAmount, TotalTime: int64(time.Now().Sub(start)) / int64(time.Millisecond)}, nil
+}
+
+func processTransactionInParallel(startTime time.Time ,transactions []db.Transaction) int64 {
+	var results = make(chan int64)
+	var totalAmount int64
+	// Setup wait group to process all transactions
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(len(transactions))
+
+	for _, transaction := range transactions {
+
+		go func(transaction db.Transaction) {
+			results <- transaction.Amount
+			waitTwentyMilliseconds()
+			defer waitGroup.Done()
+		}(transaction)
+		
+	}
+	// monitor when all work is done
+	go func() {
+		waitGroup.Wait()
+		close(results)
+		log.Printf("\n total amount: %d \n total time used in ms: %d", totalAmount, int64(time.Now().Sub(startTime)) / int64(time.Millisecond))
+	}()
+
+	for amount := range results {
+		totalAmount = totalAmount + amount
+	}
+	
+	select {
+	case <-time.After(time.Duration(1) * time.Second):
+		return totalAmount
+	}
+}
+
+func waitTwentyMilliseconds() {
+	time.Sleep(20 * time.Millisecond)
 }

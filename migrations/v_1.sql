@@ -15,18 +15,18 @@ BEGIN
 
     -- Tables
     CREATE UNLOGGED TABLE IF NOT EXISTS person(
-	pid INT PRIMARY KEY,
+	pid SERIAL PRIMARY KEY,
 	name VARCHAR NOT NULL
     );
 
     CREATE UNLOGGED TABLE IF NOT EXISTS category (
-	catId INT PRIMARY KEY,
+	catId SERIAL PRIMARY KEY,
 	name VARCHAR NOT NULL,
 	typeId INT
     );
 
     CREATE UNLOGGED TABLE IF NOT EXISTS transaction (
-	tranId INT PRIMARY KEY,
+	tranId SERIAL PRIMARY KEY,
 	catId INT REFERENCES category (catId),
     transDate DATE NOT NULL DEFAULT CURRENT_DATE,
 	amount INT
@@ -38,9 +38,37 @@ BEGIN
         FROM person
     )
     THEN 
-        INSERT INTO person(pid, name)
-        VALUES(1,'kenzou'),
-        (2,'personwithlongname');
+        INSERT INTO person(name)
+        VALUES('kenzou'),
+        ('Georgeanna Alexandria'),
+        ('Rodney Jed'),
+        ('Ken Dotty'),
+        ('Connell Vance'),
+        ('Cairo Ruth'),
+        ('Rod Jedi'),
+        ('Ken Geordie'),
+        ('Iggy Aimee'),
+        ('Rona Nydia'),
+        ('Jeri Raelyn'),
+        ('Ormonde Karina'),
+        ('Drogo Burt'),
+        ('Paulie Bryan'),
+        ('Eddy Rickey'),
+        ('Marjory Aria'),
+        ('Topsy Grover'),
+        ('Harmony Ibbie'),
+        ('Buster Alf'),
+        ('Kaydence Lew'),
+        ('Barry Jayna'),
+        ('Lorinda Natasha'),
+        ('Dawn Sophia'),
+        ('Windsor Lyle'),
+        ('Myron Edythe'),
+        ('Jaime Derryl'),
+        ('Carlyle Yancy'),
+        ('Issac Rachel'),
+        ('Yancy Maisy'),
+        ('Terry Wilda');
     END IF;
 
     IF NOT EXISTS (
@@ -48,9 +76,9 @@ BEGIN
         FROM category
     )
     THEN 
-        INSERT INTO category(catId, name, typeId)
-        VALUES(1,'Food',1),
-        (2,'Bills',1);
+        INSERT INTO category(name, typeId)
+        VALUES('Food',1),
+        ('Bills',1);
     END IF;
 
     -- TRUNCATE transaction table to prepare for bulk loading

@@ -39,8 +39,19 @@ message GetPeopleResponse {
   repeated Person people = 1;
 }
 
+message getTotalTransactionAmountRequest {
+  bool isParallel = 1;
+}
+
+message getTotalTransactionAmountResponse {
+  int64 totalAmount = 1;
+  // total time in Milliseconds
+  int64 totalTime = 2;
+}
+
 service AddService {
   rpc getCategories(Request) returns (GetCategoriesResponse);
   rpc getTransactions(Request) returns (GetTransactionsResponse);
   rpc getPeople(GetPeopleRequest) returns (GetPeopleResponse);
+  rpc getTotalTransactionAmount(getTotalTransactionAmountRequest) returns (getTotalTransactionAmountResponse);
 }

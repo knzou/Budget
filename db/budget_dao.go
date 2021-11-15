@@ -31,6 +31,8 @@ type Person struct {
 
 func GetCategories(db *sqlx.DB) ([]Category, error) {
 	rows, err := db.Query("SELECT * FROM category")
+	stats := db.Stats()
+	log.Printf("Pool Status \n Open Connections: %d \n InUse: %d \n Idle: %d", stats.OpenConnections, stats.InUse, stats.Idle)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +60,6 @@ func GetTransactions(db *sqlx.DB) ([]Transaction, error) {
 	// get is single, select is all
 	// err = db.Get(&trans, "SELECT * FROM transaction")
 	db.Select(&trans, "SELECT * FROM transaction")
-
 	log.Printf("trans %v", trans[0])
 	return trans, nil
 }
