@@ -45,8 +45,7 @@ message getTotalTransactionAmountRequest {
 
 message getTotalTransactionAmountResponse {
   int64 totalAmount = 1;
-  // total time in Milliseconds
-  int64 totalTime = 2;
+  int64 TotalTimeInMilliSeconds = 2;
 }
 
 service AddService {
