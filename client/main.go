@@ -41,6 +41,10 @@ func main() {
         g.GET("/getPeople", func(ctx *gin.Context) {
                 var req proto.GetPeopleRequest
                 ctx.BindJSON(&req)
+                if err != nil {
+                        ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }
                 if response, err := client.GetPeople(ctx, &req); err == nil {
                         ctx.JSON(http.StatusOK, gin.H{
                                 "result": response,
@@ -52,7 +56,11 @@ func main() {
         })
         g.GET("/getTotalTransactionAmount", func(ctx *gin.Context) {
                 var req proto.GetTotalTransactionAmountRequest
-                ctx.BindJSON(&req)
+                err := ctx.BindJSON(&req)
+                if err != nil {
+                        ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }
                 if response, err := client.GetTotalTransactionAmount(ctx, &req); err == nil {
                         ctx.JSON(http.StatusOK, gin.H{
                                 "result": response,

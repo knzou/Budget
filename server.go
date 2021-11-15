@@ -110,20 +110,26 @@ func (s *server) GetTotalTransactionAmount(ctx context.Context, request *proto.G
 		panic(err)
 	}
 	var totalAmount int64
+	var totalTime int64
 	if request.GetIsParallel() {
-		processTransactionInParallel(start, transactions)
+		pTotal, pTime := processTransactionInParallel(start, transactions)
+		totalAmount = pTotal
+		totalTime = pTime
+
 	} else {
 		for _, transaction := range transactions {
 			totalAmount = totalAmount + transaction.Amount
 			waitTwentyMilliseconds()
 		}
+		totalTime = int64(time.Now().Sub(start)) / int64(time.Millisecond)
 	}
-	return &proto.GetTotalTransactionAmountResponse{TotalAmount: totalAmount, TotalTime: int64(time.Now().Sub(start)) / int64(time.Millisecond)}, nil
+	return &proto.GetTotalTransactionAmountResponse{TotalAmount: totalAmount, TotalTimeInMilliSeconds: totalTime}, nil
 }
 
-func processTransactionInParallel(startTime time.Time ,transactions []db.Transaction) int64 {
+func processTransactionInParallel(startTime time.Time ,transactions []db.Transaction) (int64, int64) {
 	var results = make(chan int64)
 	var totalAmount int64
+	var totalComputedTimeInMs int64
 	// Setup wait group to process all transactions
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(len(transactions))
@@ -141,7 +147,7 @@ func processTransactionInParallel(startTime time.Time ,transactions []db.Transac
 	go func() {
 		waitGroup.Wait()
 		close(results)
-		log.Printf("\n total amount: %d \n total time used in ms: %d", totalAmount, int64(time.Now().Sub(startTime)) / int64(time.Millisecond))
+		totalComputedTimeInMs = int64(time.Now().Sub(startTime)) / int64(time.Millisecond)
 	}()
 
 	for amount := range results {
@@ -150,7 +156,7 @@ func processTransactionInParallel(startTime time.Time ,transactions []db.Transac
 	
 	select {
 	case <-time.After(time.Duration(1) * time.Second):
-		return totalAmount
+		return totalAmount, totalComputedTimeInMs
 	}
 }
 
