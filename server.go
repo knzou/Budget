@@ -154,10 +154,7 @@ func processTransactionInParallel(startTime time.Time ,transactions []db.Transac
 		totalAmount = totalAmount + amount
 	}
 	
-	select {
-	case <-time.After(time.Duration(1) * time.Second):
-		return totalAmount, totalComputedTimeInMs
-	}
+	return totalAmount, totalComputedTimeInMs
 }
 
 func waitTwentyMilliseconds() {

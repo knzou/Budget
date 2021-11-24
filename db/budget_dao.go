@@ -46,7 +46,6 @@ func GetCategories(db *sqlx.DB) ([]Category, error) {
 		if err != nil {
 			return nil,  err
 		}
-		log.Printf("cat %v", cat)
 		cats = append(cats, cat)
 	}
 	if err = rows.Err(); err != nil {
@@ -57,10 +56,7 @@ func GetCategories(db *sqlx.DB) ([]Category, error) {
 
 func GetTransactions(db *sqlx.DB) ([]Transaction, error) {
 	var trans = []Transaction{}
-	// get is single, select is all
-	// err = db.Get(&trans, "SELECT * FROM transaction")
 	db.Select(&trans, "SELECT * FROM transaction")
-	log.Printf("trans %v", trans[0])
 	return trans, nil
 }
 
@@ -72,8 +68,6 @@ func GetPeople(db *sqlx.DB, request *proto.GetPeopleRequest) ([]Person, error) {
 
 	for _, k := range []string{"name"}{
 		v, ok := contraints[k]
-		fmt.Printf("%T", v)
-		fmt.Println(ok)
 		if ok && k == "name" {
 			query.WriteString(fmt.Sprintf(" WHERE %s %% '%s'", k, v))
 		} else {
@@ -82,6 +76,5 @@ func GetPeople(db *sqlx.DB, request *proto.GetPeopleRequest) ([]Person, error) {
 	}
 	var people = []Person{}
 	db.Select(&people, query.String())
-	fmt.Println(query.String())
 	return people, nil
 }
