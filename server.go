@@ -2,37 +2,39 @@ package main
 
 import (
 	"context"
-	"log"
 	_ "database/sql"
-	"net"
 	"fmt"
-	"time"
+	"log"
+	"net"
 	"strconv"
 	"sync"
+	"time"
 
 	"github.com/knzou/Budget/db"
 	proto "github.com/knzou/Budget/proto"
-	
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	_ "github.com/lib/pq"
-    "github.com/jmoiron/sqlx"
 )
+
 // Use flags to pass in db connection credentials by using -h flag in command line
 const (
-    host    = "localhost"
-    port    = 5432
-    user    = "test_user"
-    dbname  = "kenzou"
+	host   = "localhost"
+	port   = 5432
+	user   = "test_user"
+	dbname = "kenzou"
 )
-type server struct{
+
+type server struct {
 	rdb *sqlx.DB
 }
 
 func main() {
-    psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-    "dbname=%s sslmode=disable",
-    host, port, user, dbname)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"dbname=%s sslmode=disable",
+		host, port, user, dbname)
 
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
@@ -61,7 +63,7 @@ func (s *server) GetCategories(ctx context.Context, request *proto.Request) (*pr
 
 	var cats []*proto.GetCategoriesResponse_Category
 	for _, category := range categories {
-		cats = append(cats, &proto.GetCategoriesResponse_Category{CatId: category.CatId , Name: category.Name, TypeId: category.TypeId})
+		cats = append(cats, &proto.GetCategoriesResponse_Category{CatId: category.CatId, Name: category.Name, TypeId: category.TypeId})
 	}
 	return &proto.GetCategoriesResponse{Categories: cats}, nil
 }
@@ -86,7 +88,7 @@ func (s *server) GetTransactions(ctx context.Context, request *proto.Request) (*
 			panic(err)
 		}
 		transformTransDate := &proto.Date{Year: int32(year), Month: int32(month), Day: int32(day)}
-		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId , CatId: transaction.CatId, TransDate: transformTransDate, Amount: transaction.Amount})
+		trans = append(trans, &proto.GetTransactionsResponse_Transaction{TranId: transaction.TranId, CatId: transaction.CatId, TransDate: transformTransDate, Amount: transaction.Amount})
 	}
 	return &proto.GetTransactionsResponse{Transactions: trans}, nil
 }
@@ -98,7 +100,7 @@ func (s *server) GetPeople(ctx context.Context, request *proto.GetPeopleRequest)
 	}
 	var ppl []*proto.GetPeopleResponse_Person
 	for _, person := range people {
-		ppl = append(ppl, &proto.GetPeopleResponse_Person{Pid: person.Pid , Name: person.Name})
+		ppl = append(ppl, &proto.GetPeopleResponse_Person{Pid: person.Pid, Name: person.Name})
 	}
 	return &proto.GetPeopleResponse{People: ppl}, nil
 }
@@ -126,7 +128,7 @@ func (s *server) GetTotalTransactionAmount(ctx context.Context, request *proto.G
 	return &proto.GetTotalTransactionAmountResponse{TotalAmount: totalAmount, TotalTimeInMilliSeconds: totalTime}, nil
 }
 
-func processTransactionInParallel(startTime time.Time ,transactions []db.Transaction) (int64, int64) {
+func processTransactionInParallel(startTime time.Time, transactions []db.Transaction) (int64, int64) {
 	var results = make(chan int64)
 	var totalAmount int64
 	var totalComputedTimeInMs int64
@@ -141,7 +143,7 @@ func processTransactionInParallel(startTime time.Time ,transactions []db.Transac
 			waitTwentyMilliseconds()
 			defer waitGroup.Done()
 		}(transaction)
-		
+
 	}
 	// monitor when all work is done
 	go func() {
@@ -153,7 +155,7 @@ func processTransactionInParallel(startTime time.Time ,transactions []db.Transac
 	for amount := range results {
 		totalAmount = totalAmount + amount
 	}
-	
+
 	return totalAmount, totalComputedTimeInMs
 }
 
